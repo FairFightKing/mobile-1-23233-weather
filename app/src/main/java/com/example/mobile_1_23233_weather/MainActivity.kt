@@ -1,5 +1,6 @@
 package com.example.mobile_1_23233_weather
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.weather_row.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -17,6 +19,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        recyclerWeatherList.setBackgroundColor(Color.BLACK)
+
+        recyclerWeatherList.layoutManager = LinearLayoutManager(this)
 
         getWeatherJson();
     }
@@ -46,19 +52,53 @@ class MainActivity : AppCompatActivity() {
 
                 //body
 
-                var jsonBody = "{\"City\": " + body + "}"
+                var jsonBody = "{\"WeatherList\": " + body + "}"
                 Log.i("JSON", jsonBody)
 
                 val gson = GsonBuilder().create()
                 var weatherList = gson.fromJson(jsonBody, WeatherInfo.CityWeather::class.java)
 
-                 Log.i("JSON", weatherList.sys.country)
+             //  Log.i("JSON", weatherList.toString())
 
-       //         runOnUiThread {
-        //            recyclerStationList.adapter = StationListAdapter(weatherList.stations)
 
-        //        }
+
+                runOnUiThread {
+                    recyclerWeatherList.adapter = WeatherListAdapter(weatherList)
+
+                }
             }
         })
     }
+}
+
+class WeatherListAdapter(val WeatherList: WeatherInfo.CityWeather)
+    :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>()
+{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // TODO("Not yet implemented")
+        val layoutInflater = LayoutInflater.from(parent?.context)
+        val cellForRow = layoutInflater.inflate(R.layout.weather_row, parent, false)
+        return CustomViewHolder(cellForRow)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        // TODO("Not yet implemented")
+
+        holder.itemView.weatherName.text = WeatherList.name
+        holder.itemView.weatherWeather.text = WeatherList.weather.description
+        holder.itemView.weatherCountry.text = WeatherList.sys.country
+    }
+
+    override fun getItemCount(): Int {
+        ///  TODO("Not yet implemented")
+
+        return 1
+    }
+
+
+}
+
+class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
 }

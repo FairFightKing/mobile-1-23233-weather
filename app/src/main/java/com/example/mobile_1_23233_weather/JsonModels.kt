@@ -1,24 +1,26 @@
 package com.example.mobile_1_23233_weather
 
+import com.google.gson.annotations.SerializedName
+
 class WeatherInfo {
 
     data class CityWeather
-        (
-        val name: String,
-        val weather: Weather,
-        val main: Temp,
-        val sys: Country
+    (
+            @SerializedName("weather") val weather: Weather,
+            @SerializedName("main") val main: Temperature,
+            @SerializedName("sys") val sys: Country,
+            @SerializedName("name") val name: String,
     )
     data class Weather(
-        val main: String,
-        val description: String
+            @SerializedName("main") val main: String,
+            @SerializedName("description") val description: String
     )
-    data class Temp(
-        val temp: Float
+    data class Temperature(
+            @SerializedName("temp") val temp: Float
     )
     data class Country(
-        val country: String
+            @SerializedName("country") val country: String
     )
 }
 
-class WeatherJson(val WeatherList: WeatherInfo.CityWeather)
+class WeatherJson(val WeatherList: List<WeatherInfo.CityWeather>)
