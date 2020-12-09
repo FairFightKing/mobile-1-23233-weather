@@ -5,20 +5,20 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp">
     <TextView
-        android:id="@+id/weatherName"
+        android:id="@+id/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/weatherWeather"
+        android:id="@+id/Weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="TextView" />
     <TextView
-        android:id="@+id/weatherCountry"
+        android:id="@+id/Country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

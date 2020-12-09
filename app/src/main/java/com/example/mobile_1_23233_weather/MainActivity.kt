@@ -1,5 +1,6 @@
 package com.example.mobile_1_23233_weather
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,13 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         recyclerWeatherList.layoutManager = LinearLayoutManager(this)
 
+
         getWeatherJson();
     }
 
     private fun getWeatherJson() {
         var apiKey = "56c1960c9b3cdefb6fe88da1fd7e772c"
-        var city = "Yvelines"
-        var uri = "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey"
+        var city = "2988506,6451978,6444046,2967196,2986501,3013445,3005534,3005270,2992790,3010529"
+        var uri = "https://api.openweathermap.org/data/2.5/group?id=$city&units=metric&appid=$apiKey"
         Log.i("URI", uri)
 
         //Create a request object
@@ -52,18 +54,18 @@ class MainActivity : AppCompatActivity() {
 
                 //body
 
-                var jsonBody = "{\"WeatherList\": " + body + "}"
+                var jsonBody = "{\"apiweather\": [" + body + "]}"
                 Log.i("JSON", jsonBody)
 
                 val gson = GsonBuilder().create()
-                var weatherList = gson.fromJson(jsonBody, WeatherInfo.CityWeather::class.java)
+                var weatherList = gson.fromJson(body, WeatherJson::class.java)
 
-             //  Log.i("JSON", weatherList.toString())
+                //Log.i("JSON", gson.)
 
 
 
                 runOnUiThread {
-                    recyclerWeatherList.adapter = WeatherListAdapter(weatherList)
+                    recyclerWeatherList.adapter = WeatherListAdapter(weatherList.list)
 
                 }
             }
@@ -71,34 +73,53 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class WeatherListAdapter(val WeatherList: WeatherInfo.CityWeather)
+class WeatherListAdapter(val weather: List<CityWeather>)
     :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>()
+        RecyclerView.Adapter<CustomViewHolder>()
 {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         // TODO("Not yet implemented")
         val layoutInflater = LayoutInflater.from(parent?.context)
         val cellForRow = layoutInflater.inflate(R.layout.weather_row, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         // TODO("Not yet implemented")
 
-        holder.itemView.weatherName.text = WeatherList.name
-        holder.itemView.weatherWeather.text = WeatherList.weather.description
-        holder.itemView.weatherCountry.text = WeatherList.sys.country
+        holder.itemView.Name.text = weather[position].name
+        holder.itemView.Weather.text = weather[position].weather[0].description
+        holder.itemView.Country.text = weather[position].main.temp.toString()
+        holder?.data = weather[position]
     }
 
     override fun getItemCount(): Int {
         ///  TODO("Not yet implemented")
 
-        return 1
+        return weather.size
     }
 
 
 }
 
-class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class CustomViewHolder(view: View, var data: CityWeather?= null) : RecyclerView.ViewHolder(view) {
+    companion object {
+        val LOGCAT_CATEGORY = "JSON"
+        val Country_temp = "Country_temp"
+        val Country_feels_like = "Country_feels_like"
+        val Country_humidity = "Country_humidity"
+        val Country_pressure = "Country_pressur"
+        val DETAIL_TITLE_KEY = "ActionBarTitle"
 
+    }
+
+    init {
+        view.setOnClickListener {
+
+            Log.i(LOGCAT_CATEGORY, "Recycler view Item has been clicked")
+            Log.i(LOGCAT_CATEGORY, "Name is is " + data?.name)
+
+        }
+
+    }
 }
