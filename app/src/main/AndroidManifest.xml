@@ -16,6 +16,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecyclerDetail"
+            android:label="Detail Page"
+            android:launchMode="singleTop"
+            >
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity">
+
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>

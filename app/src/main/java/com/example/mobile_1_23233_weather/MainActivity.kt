@@ -88,8 +88,7 @@ class WeatherListAdapter(val weather: List<CityWeather>)
         // TODO("Not yet implemented")
 
         holder.itemView.Name.text = weather[position].name
-        holder.itemView.Weather.text = weather[position].weather[0].description
-        holder.itemView.Country.text = weather[position].main.temp.toString()
+        holder.itemView.Country.text = weather[position].sys.country
         holder?.data = weather[position]
     }
 
@@ -105,19 +104,33 @@ class WeatherListAdapter(val weather: List<CityWeather>)
 class CustomViewHolder(view: View, var data: CityWeather?= null) : RecyclerView.ViewHolder(view) {
     companion object {
         val LOGCAT_CATEGORY = "JSON"
-        val Country_temp = "Country_temp"
-        val Country_feels_like = "Country_feels_like"
-        val Country_humidity = "Country_humidity"
-        val Country_pressure = "Country_pressur"
+        val temp = "temp"
+        val tempFeelsLike = "tempFeelsLike"
+        val weather = "weather"
+        val weatherDesc = "weatherDesc"
         val DETAIL_TITLE_KEY = "ActionBarTitle"
+        val country = "country"
+        val wind = "wind"
 
     }
 
     init {
         view.setOnClickListener {
 
-            Log.i(LOGCAT_CATEGORY, "Recycler view Item has been clicked")
-            Log.i(LOGCAT_CATEGORY, "Name is is " + data?.name)
+            Log.i(LOGCAT_CATEGORY, "Name is " + data?.name)
+
+            val intent = Intent(view.context, RecyclerDetail::class.java)
+
+            intent.putExtra(DETAIL_TITLE_KEY,"Weather of " + data?.name)
+
+            intent.putExtra(weatherDesc, data?.weather?.get(0)?.description)
+            intent.putExtra(weather, data?.weather?.get(0)?.main)
+            intent.putExtra(temp, data?.main?.temp.toString())
+            intent.putExtra(tempFeelsLike, data?.main?.feels_like.toString())
+            intent.putExtra(wind, data?.wind?.speed.toString())
+            intent.putExtra(country, data?.sys?.country)
+
+            view.context.startActivity(intent)
 
         }
 
