@@ -13,10 +13,10 @@ class RecyclerDetail : AppCompatActivity() {
         supportActionBar?.title = title
 
         SingleWeather.text = "Weather is "+intent.getStringExtra(CustomViewHolder.weather)
-        SingleWeatherDesc.text = "Weather Feels Like "+intent.getStringExtra(CustomViewHolder.weatherDesc)
+        SingleWeatherDesc.text = "Weather is more precisely "+intent.getStringExtra(CustomViewHolder.weatherDesc)
         SingleTemp.text = "Temperature is " + intent.getStringExtra(CustomViewHolder.temp) + " degrees in Celsius"
         SingleTempFeelsLike.text = "Temperature feels like " + intent.getStringExtra(CustomViewHolder.tempFeelsLike) + " degrees in Celsius"
-        Singlewind.text = "Wind is at " + intent.getStringExtra(CustomViewHolder.wind) + " in km/h"
+        Singlewind.text = "Wind is at " + intent.getStringExtra(CustomViewHolder.wind) + " km/h"
         SingleCountry.text = "This city is situated in " + intent.getStringExtra(CustomViewHolder.country)
 
     }
